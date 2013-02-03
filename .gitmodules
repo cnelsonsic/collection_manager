@@ -1,6 +1,0 @@
-[submodule "static/jquery-qrcode"]
-	path = static/jquery-qrcode
-	url = git://github.com/jeromeetienne/jquery-qrcode.git
-[submodule "collection_manager/static/jquery-qrcode"]
-	path = collection_manager/static/jquery-qrcode
-	url = git://github.com/jeromeetienne/jquery-qrcode.git

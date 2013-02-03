@@ -7,7 +7,7 @@ Installing
 ----------
 
 ``bash
-$ pip install --upgrade --use-mirrors git+https://github.com/cnelsonsic/collection_manager.git
+$ pip install --use-mirrors https://github.com/cnelsonsic/collection_manager/archive/master.zip
 ``
 
 Usage
