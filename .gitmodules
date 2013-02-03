@@ -1,0 +1,3 @@
+[submodule "static/jquery-qrcode"]
+	path = static/jquery-qrcode
+	url = git://github.com/jeromeetienne/jquery-qrcode.git
