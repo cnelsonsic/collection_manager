@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(name='CollectionManager',
       version='0.1',
-      description='A stupid collection management app.'
+      description='A stupid collection management app.',
       author='Charles Nelson',
       author_email='cnelsonsic@gmail.com',
 
@@ -13,7 +13,7 @@ setup(name='CollectionManager',
 
       entry_points = {
           'console_scripts': [
-              'manager = collection_manager.manager:main',
+              'collection_manager = collection_manager.manager:main',
               ],
           },
      )
