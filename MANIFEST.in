@@ -1,0 +1,2 @@
+recursive-include collection_manager/templates *
+recursive-include collection_manager/static *
