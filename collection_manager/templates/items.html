@@ -44,8 +44,8 @@
         function make_qrcode(target, value) {
             jQuery(target).qrcode({text: value,
                                 correctLevel: 1,
-                                width: 32,
-                                height: 32,
+                                width: 64,
+                                height: 64,
                                 });
         }
 
@@ -56,7 +56,7 @@
                     make_qrcode('#qrcode-{{ item.id }}', '{{item.id}}');
                 {% elif config.QRCODE_URL %}
                     // Use just the URL.
-                    make_qrcode('#qrcode-{{ item.id }}', '{{ url_for('item', id=item.id, _external=True) }}');
+                    make_qrcode('#qrcode-{{ item.id }}', '{{ url_for('update', id=item.id, _external=True) }}');
                 {% endif %}
             {% endfor %}
         });

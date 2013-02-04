@@ -38,7 +38,7 @@
                 make_qrcode('#qrcode', $('#id').val());
             {% elif config.QRCODE_URL %}
                 // Use just the URL.
-                make_qrcode('#qrcode', '{{ url_for('item', id=None, _external=True) }}'+$('#id').val());
+                make_qrcode('#qrcode', '{{ url_for('update', id=None, _external=True) }}'+$('#id').val());
             {% endif %}
         }
 

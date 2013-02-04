@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = '\xcb\xb9|\xf5\xfb<]{\xf2\x94\x98\xab-0n\xf9kT\x98\xf8\x00\xa5\x98M'
 
 app.config.QRCODE_URL = True
-app.config.QRCODE_IDS = True
+# app.config.QRCODE_IDS = True
 
 
 def make_form(entity):
@@ -92,7 +92,7 @@ def index():
 
 def main():
     init_database()
-    app.run(debug=True)
+    app.run('0.0.0.0', debug=True)
 
 if __name__ == '__main__':
     main()
