@@ -86,6 +86,10 @@ def item(id=None):
     return "Hello item."
 
 
+@app.route('/')
+def index():
+    return redirect(url_for('items'))
+
 def main():
     init_database()
     app.run(debug=True)
