@@ -62,6 +62,7 @@ def update(id=None):
 
     if form.validate_on_submit():
         form_to_elixir(form, thisitem)
+        session.commit()
         return redirect(url_for('items'))
     else:
         # Remove it from the session until we're ready to really insert it
@@ -74,10 +75,11 @@ def update(id=None):
 @app.route('/items/')
 def items():
     '''Show a listing of items.'''
-    return "hello listing"
+    return render_template("items.html",
+                           items=Item.query.all(),
+                           getattr=getattr)
 
 
-@app.route('/items/')
 @app.route('/items/<id>')
 def item(id=None):
     '''Show a single item's data.'''

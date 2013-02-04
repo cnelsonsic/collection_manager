@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Items{% endblock %}
+
+{% block content %}
+<table class="table table-bordered table-condensed table-hover">
+    <thead>
+        <tr>
+            {% for key in items[0].to_dict()|sort %}
+            <th>{{ key|capitalize }}</th>
+            {% endfor %}
+
+            <th>QR Code</th>
+            <th>Edit</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in items %}
+        <tr>
+            {% for key in item.to_dict()|sort %}
+            <td>
+                {{ getattr(item, key) }}
+            </td>
+            {% endfor %}
+
+            <td>
+                <div id="qrcode-{{ item.id }}"></div>
+            </td>
+
+            <td>
+                <a href="{{url_for('update', id=item.id)}}"><i class="icon-edit icon-large"></i></a>
+            </td>
+
+        </tr>
+        {% endfor %}
+</table>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/static/jquery.qrcode.min.js"></script>
+    <script type="text/javascript">
+        function make_qrcode(target, value) {
+            jQuery(target).qrcode({text: value,
+                                correctLevel: 1,
+                                width: 32,
+                                height: 32,
+                                });
+        }
+
+        $(document).ready(function() {
+            {% for item in items %}
+                {% if config.QRCODE_IDS %}
+                    // Use the ID
+                    make_qrcode('#qrcode-{{ item.id }}', '{{item.id}}');
+                {% elif config.QRCODE_URL %}
+                    // Use just the URL.
+                    make_qrcode('#qrcode-{{ item.id }}', '{{ url_for('item', id=item.id, _external=True) }}');
+                {% endif %}
+            {% endfor %}
+        });
+
+    </script>
+{% endblock %}

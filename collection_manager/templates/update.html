@@ -1,47 +1,54 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<script type="text/javascript" src="/static/jquery.qrcode.min.js"></script>
-<script type="text/javascript">
-    function make_qrcode(target, value) {
-        jQuery(target).qrcode({text: value,
-                               correctLevel: 1,
-                               width: 64,
-                               height: 64,
-                              });
-    }
+{% extends "base.html" %}
 
-    function update_qrcode() {
-        $('canvas').remove();
+{% block title %}Update{% endblock %}
 
-        {% if config.QRCODE_IDS %}
-            // Use the ID
-            make_qrcode('#qrcode', $('#id').val());
-        {% elif config.QRCODE_URL %}
-            // Use just the URL.
-            make_qrcode('#qrcode', '{{ url_for('item', id=None, _external=True) }}'+$('#id').val());
-        {% endif %}
-    }
+{% block content %}
+    <form method="POST" action="/update/{{ id }}" class="well">
 
-    $(document).ready(function() {
-        update_qrcode();
+        {% for field in form %}
+            {% if field.name != "csrf_token" %}
+                {{ field.label }}
+            {% endif %}
 
-        $("#id").on('input', function() {
+                {{ field }}
+        {% endfor %}
+
+        <input type="submit" value="Update">
+    </form>
+
+    <div id="qrcode"></div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="/static/jquery.qrcode.min.js"></script>
+    <script type="text/javascript">
+        function make_qrcode(target, value) {
+            jQuery(target).qrcode({text: value,
+                                correctLevel: 1,
+                                width: 64,
+                                height: 64,
+                                });
+        }
+
+        function update_qrcode() {
+            $('canvas').remove();
+
+            {% if config.QRCODE_IDS %}
+                // Use the ID
+                make_qrcode('#qrcode', $('#id').val());
+            {% elif config.QRCODE_URL %}
+                // Use just the URL.
+                make_qrcode('#qrcode', '{{ url_for('item', id=None, _external=True) }}'+$('#id').val());
+            {% endif %}
+        }
+
+        $(document).ready(function() {
             update_qrcode();
-            });
-    });
 
-</script>
-<form method="POST" action="/update/{{ id }}">
+            $("#id").on('input', function() {
+                update_qrcode();
+                });
+        });
 
-    {% for field in form %}
-        {% if field.name != "csrf_token" %}
-            {{ field.label }}
-        {% endif %}
-
-            {{ field }}
-            <br>
-    {% endfor %}
-
-    <input type="submit" value="Update">
-</form>
-
-<div id="qrcode"></div>
+    </script>
+{% endblock %}
