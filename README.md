@@ -6,13 +6,19 @@ Manage your ever-growing collection of stuff.
 Installing
 ----------
 
-``bash
+```bash
 $ pip install --use-mirrors https://github.com/cnelsonsic/collection_manager/archive/master.zip
-``
+```
 
 Usage
 -----
 
-Add or update an item in your collection: http://localhost:5000/update
+```bash
+$ collection_manager
+```
 
-List the contents of your collection: http://localhost:5000/items
+Then go to [http://localhost:5000/](http://localhost:5000/).
+
+"Add" is for adding a new item.
+
+"List" is for showing all the items in your collection.
