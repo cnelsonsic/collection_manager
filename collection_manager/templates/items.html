@@ -3,6 +3,7 @@
 {% block title %}Items{% endblock %}
 
 {% block content %}
+{% if items %}
 <table class="table table-bordered table-condensed table-hover">
     <thead>
         <tr>
@@ -36,6 +37,9 @@
         </tr>
         {% endfor %}
 </table>
+{% else %}
+<h2>You have no items to list. <a href="{{url_for('update')}}">Add some!</a></h2>
+{% endif %}
 {% endblock %}
 
 {% block script %}
