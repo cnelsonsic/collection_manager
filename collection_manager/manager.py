@@ -40,6 +40,14 @@ def form_to_elixir(form, entity):
 class Item(Entity):
     name = Field(Unicode)
     location = Field(Unicode)
+    category = Field(Unicode)
+    photos = OneToMany('Photo')
+
+
+class Photo(Entity):
+    name = Field(Unicode)
+    data = Field(Binary, deferred=True)
+    item = ManyToOne('Item')
 
 
 def init_database():
