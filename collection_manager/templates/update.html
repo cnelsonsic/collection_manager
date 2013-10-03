@@ -4,13 +4,14 @@
 
 {% block content %}
     <form method="POST" action="/update/{{ id }}" class="well">
+        <span class="help-block">Everything is required.</span>
 
         {% for field in form %}
             {% if field.name != "csrf_token" %}
                 {{ field.label }}
             {% endif %}
 
-                {{ field }}
+            {{ field }}
         {% endfor %}
 
         <input type="submit" value="Update">

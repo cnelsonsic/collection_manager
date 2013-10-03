@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, redirect, url_for
 from elixir import *
-from flask.ext.wtf import Form, TextField, Required
+from flask.ext.wtf import Form, TextField, Required, SelectField
+import sqlalchemy
 from sqlalchemy import func
 from sqlalchemy.orm import ColumnProperty
 
@@ -11,17 +12,33 @@ app.secret_key = '\xcb\xb9|\xf5\xfb<]{\xf2\x94\x98\xab-0n\xf9kT\x98\xf8\x00\xa5\
 app.config.QRCODE_URL = True
 # app.config.QRCODE_IDS = True
 
+app.config.STATES = ['unopened', 'opened', 'assembled', 'based', 'primed',
+                     'blackwashed', 'partially basecoated', 'basecoated',
+                     'partially washed', 'washed', 'partially drybrushed',
+                     'drybrushed', 'clearcoated', 'bulletcoated']
+
 
 def make_form(entity):
     col_prop_names = [p for p in entity.mapper.iterate_properties
                             if isinstance(p, ColumnProperty)]
     attrs = {}
-    for name in col_prop_names:
-        name = str(name.key)
+    for prop in col_prop_names:
+        name = str(prop.key)
         validators = [Required()]
-        attrs[name] = TextField(name.capitalize(),
-                                default=getattr(entity, name),
-                                validators=validators)
+
+        coltype = None
+        if hasattr(prop.columns[0], 'type'):
+            coltype = prop.columns[0].type
+
+        if isinstance(coltype, sqlalchemy.types.Enum):
+            attrs[name] = SelectField(name.capitalize(),
+                                      choices=[(k, k.title()) for i, k in enumerate(coltype.enums)],
+                                      default=getattr(entity, name),
+                                      )
+        else:
+            attrs[name] = TextField(name.capitalize(),
+                                    default=getattr(entity, name),
+                                    validators=validators)
 
 
     new_class = type(entity.__class__.__name__+"Form",
@@ -41,6 +58,7 @@ class Item(Entity):
     name = Field(Unicode)
     location = Field(Unicode)
     category = Field(Unicode)
+    state = Field(Enum(*app.config.STATES))
     photos = OneToMany('Photo')
 
 

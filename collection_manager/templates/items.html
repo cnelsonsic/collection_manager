@@ -22,7 +22,11 @@
         <tr>
             {% for key in item.to_dict()|sort %}
             <td>
-                {{ getattr(item, key) }}
+                {% if key == "state" %}
+                    {{ getattr(item, key)|title }}
+                {% else %}
+                    {{ getattr(item, key) }}
+                {% endif %}
             </td>
             {% endfor %}
 
