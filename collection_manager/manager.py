@@ -61,6 +61,11 @@ class Item(Entity):
     state = Field(Enum(*app.config.STATES))
     photos = OneToMany('Photo')
 
+    def __reduce__(self):
+        'Return state information for pickling'
+        return self.__class__, (unicode(self.name), unicode(self.location),
+                unicode(self.category), str(self.state), list(self.photos))
+
 
 class Photo(Entity):
     name = Field(Unicode)
@@ -111,6 +116,18 @@ def item(id=None):
     '''Show a single item's data.'''
     return "Hello item."
 
+@app.route('/export/')
+def export():
+    from yaml import load, dump
+    try:
+        from yaml import CLoader as Loader, CDumper as Dumper
+    except ImportError:
+        from yaml import Loader, Dumper
+
+    from flask import Response
+
+    output = dump([Item.query.all(),], Dumper=Dumper)
+    return Response(output, mimetype='text/x-yaml')
 
 @app.route('/')
 def index():
